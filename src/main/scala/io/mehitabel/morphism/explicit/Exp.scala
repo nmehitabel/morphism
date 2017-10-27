@@ -1,5 +1,5 @@
 package io.mehitabel.morphism
-package exp
+package explicit
 
 sealed trait Exp
 final case class IntValue(v: Int) extends Exp
@@ -21,7 +21,7 @@ object Evaluater {
       val v = evaluate(e1)
       v * v
   }
-
+  // repetition of essentially the same process
   val mkString: Exp => String = {
     case IntValue(v) => v.toString
     case DecValue(v) => v.toString
@@ -29,5 +29,17 @@ object Evaluater {
     case Multiply(e1, e2) => s"( ${mkString(e1)} * ${mkString(e2)} )"
     case Divide(e1, e2) => s"( ${mkString(e1)} / ${mkString(e2)} )"
     case Square(e1) => s"( ${mkString(e1)}^2 )"
+  }
+
+  //And all over again but also optimize only helpful for one case but
+  //nonetheless all must be accounted for
+  val optimize: Exp => Exp = {
+    case Multiply(e1, e2) if (e1 == e2) => Square(optimize(e1))
+    case IntValue(v) => IntValue(v) // if optimize(v) then will compile but won't terminate!!!
+    case DecValue(v) => DecValue(v)
+    case Sum(e1, e2) => Sum(optimize(e1), optimize(e2))
+    case Multiply(e1, e2) => Multiply(optimize(e1), optimize(e2))
+    case Square(e) => Square(optimize(e))
+    case Divide(e1, e2) => Divide(optimize(e1), optimize(e2))
   }
 }
