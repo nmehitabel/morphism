@@ -19,3 +19,11 @@ object Example {
       )
     )
 }
+
+object FixExample {
+  val fExp1: Fix[Exp] =
+    Fix(Sum[Fix[Exp]](
+      Fix(IntValue[Fix[Exp]](10)),
+      Fix(IntValue[Fix[Exp]](5))
+    ))
+}
