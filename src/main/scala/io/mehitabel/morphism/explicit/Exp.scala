@@ -43,3 +43,14 @@ object Evaluater {
     case Divide(e1, e2) => Divide(optimize(e1), optimize(e2))
   }
 }
+
+object Example {
+  val exp2: Exp =
+    Divide(
+      DecValue(5.2),
+      Sum(
+        IntValue(10),
+        IntValue(5)
+      )
+    )
+}
