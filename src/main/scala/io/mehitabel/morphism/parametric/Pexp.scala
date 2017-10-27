@@ -26,4 +26,14 @@ object FixExample {
       Fix(IntValue[Fix[Exp]](10)),
       Fix(IntValue[Fix[Exp]](5))
     ))
+
+  // Note nested Fix[_] type ascriptions not necessary
+  val fExp2: Fix[Exp] =
+    Fix(Divide(
+      Fix(DecValue(5.2)),
+      Fix(Sum(
+        Fix(IntValue(5)),
+        Fix(IntValue(10))
+      ))
+    ))
 }
